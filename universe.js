@@ -14,11 +14,14 @@ const showDataInCard = (items) => {
         cardDiv.classList.add('col')
         cardDiv.innerHTML = `
         <div class="card h-100">
-            <img src="..." class="card-img-top" alt="...">
+            <img class="p-3 rounded-5" src=${item.image} alt="...">
             <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                    additional content. This content is a little bit longer.</p>
+                <h5 class="card-title">Features</h5>
+               <ul>
+               <li>${item.features[0]}
+               <li>${item.features[1]}
+               <li>${item.features[2]}
+               </ul>
             </div>
             <div class="card-footer">
                 <small class="text-muted">Last updated 3 mins ago</small>
