@@ -23,8 +23,13 @@ const showDataInCard = (items) => {
                <li>${item.features[2]}
                </ul>
             </div>
-            <div class="card-footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
+            <div class="card-footer bg-body d-flex  align-items-center justify-content-between">
+            <div>
+            <h5 class="card-title">${item.name}</h5>
+            <p>${item.published_in}</p>
+            </div>
+            <button type="button" class="btn btn-outline-danger">Details</button>
+
             </div>
     </div>
         `
