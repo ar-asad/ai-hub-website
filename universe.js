@@ -1,5 +1,6 @@
 
 const loadCardData = () => {
+    toggleSpiner(true)
     fetch('https://openapi.programming-hero.com/api/ai/tools')
         .then(res => res.json())
         .then(data => showDataInCard(data.data.tools))
@@ -36,6 +37,7 @@ const showDataInCard = (items) => {
         `
         mainContainer.appendChild(cardDiv);
     }
+    toggleSpiner(false)
 }
 const itemsDetails = (itemsId) => {
     const url = (`https://openapi.programming-hero.com/api/ai/tool/0${itemsId}`)
@@ -94,6 +96,17 @@ const showItemsDetails = (itemsDetails) => {
     </div>
 `
 
+}
+
+// toggleSppiner function....
+const toggleSpiner = (isLoading) => {
+    const spinerDiv = document.getElementById('toggle-spiner')
+    if (isLoading) {
+        spinerDiv.classList.remove('d-none')
+    }
+    else {
+        spinerDiv.classList.add('d-none')
+    }
 }
 
 loadCardData();
