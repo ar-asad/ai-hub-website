@@ -23,14 +23,10 @@ const showDataInCard = (items, dataLimit, sort) => {
 
     }
     if (sort) {
-
-
         items.sort((a, b) => (new Date(a.published_in) > new Date(b.published_in)) ? 1 : ((new Date(b.published_in) > new Date(a.published_in)) ? -1 : 0));
-
-
     }
     for (const item of items) {
-        // console.log(item)
+        console.log(item)
         const cardDiv = document.createElement('div')
         cardDiv.classList.add('col')
         cardDiv.innerHTML = `
@@ -60,15 +56,14 @@ const showDataInCard = (items, dataLimit, sort) => {
     toggleSpiner(false)
 }
 const itemsDetails = (itemId) => {
-    console.log(itemId)
-    // console.log(item.id);
     const url = (`https://openapi.programming-hero.com/api/ai/tool/${String(itemId).padStart(2, '0')}`)
     fetch(url)
         .then(res => res.json())
-        .then(data => showItemsDetails(data.data))
+        .then(data => showItemsDetails(data?.data))
 }
 
 const showItemsDetails = (itemsDetails) => {
+    console.log(itemsDetails)
     const cardDetailsContainer = document.getElementById('cardDetails-container')
     cardDetailsContainer.innerHTML = `
     <div class="col">
@@ -78,13 +73,14 @@ const showItemsDetails = (itemsDetails) => {
             </h5>
             <div class="row row-cols-1 row-cols-md-3 mb-3">
                 <div style="color: #03A30A;" class="col bg-light fw-bold p-4 rounded">
-                <p>${itemsDetails.pricing[0].price ? itemsDetails.pricing[0].price : "Free of coast/"} <br>${itemsDetails.pricing[0].plan}</p>
+                <p>${itemsDetails.pricing[0].price && itemsDetails?.pricing[0].price != 0 && itemsDetails.pricing[0].price != "No cost" ? itemsDetails.pricing[0].price : "Free of coast/"} <br>${itemsDetails.pricing[0].plan}</p>
                 </div >
-                <div style="color: #F28927;" class="col bg-light fw-bold p-4 rounded"> <p>${itemsDetails.pricing[1].price ? itemsDetails.pricing[1].price : "Free of coast/"} <br>${itemsDetails.pricing[1].plan}</p>
+                <div style="color: #F28927;" class="col bg-light fw-bold p-4 rounded"> <p>${itemsDetails.pricing[1].price && itemsDetails.pricing[1].price != 0 && itemsDetails.pricing[1].price != "No cost" ? itemsDetails.pricing[1].price : "Free of coast/"} <br>${itemsDetails.pricing[1].plan}</p>
                 </div>
-                <div style="color: #EB5757;" class="col bg-light fw-bold p-4 rounded"> <p>${itemsDetails.pricing[2].price ? itemsDetails.pricing[2].price : "Free of coast/"} <br>${itemsDetails.pricing[2].plan}</p>
+                <div style="color: #EB5757;" class="col bg-light fw-bold p-4 rounded"> <p>${itemsDetails.pricing[2].price && itemsDetails.pricing[2].price != 0 && itemsDetails.pricing[2].price != "No cost" ? itemsDetails.pricing[2].price : "Free of coast/"} <br>${itemsDetails.pricing[2].plan}</p>
                 </div>
             </div >
+        
     <div class="row row-cols-1 row-cols-md-2 justify-content-between ">
         <div class='col'>
             <h4>Features</h4>
@@ -103,8 +99,8 @@ const showItemsDetails = (itemsDetails) => {
             </ul>
         </div>
     </div>
-        </div >
-    </div >
+    </div>
+</div>
 </div >
     <div class="col modarl-right-container">
         <div class="card h-100">
