@@ -1,30 +1,32 @@
-
-const loadCardData = (dataLimit) => {
+let fetchData;
+const loadCardData = (dataLimit, sort) => {
     toggleSpiner(true)
     fetch('https://openapi.programming-hero.com/api/ai/tools')
         .then(res => res.json())
-        .then(data => showDataInCard(data.data.tools, dataLimit))
+        .then(data => {
+
+            showDataInCard(data.data.tools, dataLimit, sort);
+        })
 }
 const showDataInCard = (items, dataLimit, sort) => {
+
     const mainContainer = document.getElementById('main-container');
     const seeMore = document.getElementById('see-more')
     // show default 6 cards in display
-    if (dataLimit && items.length > 6) {
+    if (!sort && dataLimit && items.length > 6) {
         items = items.slice(0, 6)
         seeMore.classList.remove('d-none');
     }
-    //     if (sort) {
-    //         mainContainer.innerText = '';
-    //         data = items.slice(0);
-    //         data.sort(function (a, b) {
-    //             return a.published_in - b.published_in;
-
-    //         });
-    //     console.log(data)
-    // }
     else {
         mainContainer.innerText = '';
         seeMore.classList.add('d-none');
+
+    }
+    if (sort) {
+
+
+        items.sort((a, b) => (new Date(a.published_in) > new Date(b.published_in)) ? 1 : ((new Date(b.published_in) > new Date(a.published_in)) ? -1 : 0));
+
 
     }
     for (const item of items) {
@@ -57,16 +59,16 @@ const showDataInCard = (items, dataLimit, sort) => {
     }
     toggleSpiner(false)
 }
-const itemsDetails = (itemsId) => {
-    // console.log(itemsId);
-    const url = (`https://openapi.programming-hero.com/api/ai/tool/0${itemsId}`)
+const itemsDetails = (itemId) => {
+    console.log(itemId)
+    // console.log(item.id);
+    const url = (`https://openapi.programming-hero.com/api/ai/tool/${String(itemId).padStart(2, '0')}`)
     fetch(url)
         .then(res => res.json())
         .then(data => showItemsDetails(data.data))
 }
 
 const showItemsDetails = (itemsDetails) => {
-    console.log(itemsDetails)
     const cardDetailsContainer = document.getElementById('cardDetails-container')
     cardDetailsContainer.innerHTML = `
     <div class="col">
@@ -74,17 +76,17 @@ const showItemsDetails = (itemsDetails) => {
         <div class="card-body details-card-first rounded">
             <h5>${itemsDetails.description}
             </h5>
-            <div class="d-flex align-items-center justify-content-between m-2 ">
-                <div style="color: #03A30A;" class="bg-light p-4 rounded">
+            <div class="row row-cols-1 row-cols-md-3 mb-3">
+                <div style="color: #03A30A;" class="col bg-light fw-bold p-4 rounded">
                 <p>${itemsDetails.pricing[0].price ? itemsDetails.pricing[0].price : "Free of coast/"} <br>${itemsDetails.pricing[0].plan}</p>
                 </div >
-                <div style="color: #F28927;" class="bg-light p-4 rounded"> <p>${itemsDetails.pricing[1].price ? itemsDetails.pricing[1].price : "Free of coast/"} <br>${itemsDetails.pricing[1].plan}</p>
+                <div style="color: #F28927;" class="col bg-light fw-bold p-4 rounded"> <p>${itemsDetails.pricing[1].price ? itemsDetails.pricing[1].price : "Free of coast/"} <br>${itemsDetails.pricing[1].plan}</p>
                 </div>
-                <div style="color: #EB5757;" class="bg-light p-4 rounded"> <p>${itemsDetails.pricing[2].price ? itemsDetails.pricing[2].price : "Free of coast/"} <br>${itemsDetails.pricing[2].plan}</p>
+                <div style="color: #EB5757;" class="col bg-light fw-bold p-4 rounded"> <p>${itemsDetails.pricing[2].price ? itemsDetails.pricing[2].price : "Free of coast/"} <br>${itemsDetails.pricing[2].plan}</p>
                 </div>
             </div >
-    <div class="d-flex align-items-center justify-content-between ">
-        <div>
+    <div class="row row-cols-1 row-cols-md-2 justify-content-between ">
+        <div class='col'>
             <h4>Features</h4>
             <ul>
                 <li>${itemsDetails.features[1].feature_name}</li>
@@ -92,7 +94,7 @@ const showItemsDetails = (itemsDetails) => {
                 <li>${itemsDetails.features[3].feature_name}</li>
             </ul>
         </div>
-        <div>
+        <div class='col'>
             <h4>Integrations</h4>
             <ul>
                 <li>${itemsDetails.integrations[0] ? itemsDetails.integrations[0] : "No data found"}</li>
@@ -136,7 +138,7 @@ document.getElementById('btn-see-more').addEventListener('click', () => {
 })
 // short card by date...
 document.getElementById('btn-sort-card').addEventListener('click', () => {
-    loadCardData(true);
+    loadCardData(6, true);
 })
 
 loadCardData(6);
