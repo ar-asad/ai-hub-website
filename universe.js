@@ -1,14 +1,23 @@
 
-const loadCardData = () => {
+const loadCardData = (dataLimit) => {
     toggleSpiner(true)
     fetch('https://openapi.programming-hero.com/api/ai/tools')
         .then(res => res.json())
-        .then(data => showDataInCard(data.data.tools))
+        .then(data => showDataInCard(data.data.tools, dataLimit))
 }
-const showDataInCard = (items) => {
+const showDataInCard = (items, dataLimit) => {
     const mainContainer = document.getElementById('main-container');
+    const seeMore = document.getElementById('see-more')
     // show default 6 cards in display
-    items = items.slice(0, 6)
+    if (dataLimit && items.length > 6) {
+        items = items.slice(0, 6)
+        seeMore.classList.remove('d-none');
+    }
+    else {
+        mainContainer.innerText = '';
+        seeMore.classList.add('d-none');
+
+    }
     for (const item of items) {
         // console.log(item)
         const cardDiv = document.createElement('div')
@@ -40,6 +49,7 @@ const showDataInCard = (items) => {
     toggleSpiner(false)
 }
 const itemsDetails = (itemsId) => {
+    // console.log(itemsId);
     const url = (`https://openapi.programming-hero.com/api/ai/tool/0${itemsId}`)
     fetch(url)
         .then(res => res.json())
@@ -76,9 +86,9 @@ const showItemsDetails = (itemsDetails) => {
         <div>
             <h4>Integrations</h4>
             <ul>
-                <li>${itemsDetails.integrations[0]}</li>
-                <li>${itemsDetails.integrations[1]}</li>
-                <li>${itemsDetails.integrations[2]}</li>
+                <li>${itemsDetails.integrations[0] ? itemsDetails.integrations[0] : ""}</li>
+                <li>${itemsDetails.integrations[1] ? itemsDetails.integrations[1] : ""}</li>
+                <li>${itemsDetails.integrations[2] ? itemsDetails.integrations[2] : ""}</li>
             </ul>
         </div>
     </div>
@@ -109,4 +119,10 @@ const toggleSpiner = (isLoading) => {
     }
 }
 
-loadCardData();
+// show all card......
+document.getElementById('btn-see-more').addEventListener('click', () => {
+    loadCardData();
+
+})
+
+loadCardData(6);
