@@ -5,7 +5,7 @@ const loadCardData = (dataLimit) => {
         .then(res => res.json())
         .then(data => showDataInCard(data.data.tools, dataLimit))
 }
-const showDataInCard = (items, dataLimit) => {
+const showDataInCard = (items, dataLimit, sort) => {
     const mainContainer = document.getElementById('main-container');
     const seeMore = document.getElementById('see-more')
     // show default 6 cards in display
@@ -13,6 +13,15 @@ const showDataInCard = (items, dataLimit) => {
         items = items.slice(0, 6)
         seeMore.classList.remove('d-none');
     }
+    //     if (sort) {
+    //         mainContainer.innerText = '';
+    //         data = items.slice(0);
+    //         data.sort(function (a, b) {
+    //             return a.published_in - b.published_in;
+
+    //         });
+    //     console.log(data)
+    // }
     else {
         mainContainer.innerText = '';
         seeMore.classList.add('d-none');
@@ -86,18 +95,19 @@ const showItemsDetails = (itemsDetails) => {
         <div>
             <h4>Integrations</h4>
             <ul>
-                <li>${itemsDetails.integrations[0] ? itemsDetails.integrations[0] : ""}</li>
-                <li>${itemsDetails.integrations[1] ? itemsDetails.integrations[1] : ""}</li>
-                <li>${itemsDetails.integrations[2] ? itemsDetails.integrations[2] : ""}</li>
+                <li>${itemsDetails.integrations[0] ? itemsDetails.integrations[0] : "No data found"}</li>
+                <li>${itemsDetails.integrations[1] ? itemsDetails.integrations[1] : "No data found"}</li>
+                <li>${itemsDetails.integrations[2] ? itemsDetails.integrations[2] : "No data found"}</li>
             </ul>
         </div>
     </div>
         </div >
     </div >
 </div >
-    <div class="col">
+    <div class="col modarl-right-container">
         <div class="card h-100">
             <img class="p-3 rounded-5" src=${itemsDetails.image_link[0]} alt="...">
+            <p class="card-accurecy p-2 fw-semibold">${itemsDetails.accuracy.score}% accuracy</p>
                 <div class="card-body">
                     <h5 class="card-title text-center">${itemsDetails.input_output_examples[0].input}</h5>
                     <p>${itemsDetails.input_output_examples[1].output ? itemsDetails.input_output_examples[1].output : "No! Not Yet! Take a break!!!"}</p>
@@ -123,6 +133,10 @@ const toggleSpiner = (isLoading) => {
 document.getElementById('btn-see-more').addEventListener('click', () => {
     loadCardData();
 
+})
+// short card by date...
+document.getElementById('btn-sort-card').addEventListener('click', () => {
+    loadCardData(true);
 })
 
 loadCardData(6);

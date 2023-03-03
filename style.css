@@ -2,3 +2,18 @@
     background: rgba(235, 87, 87, 0.05);
     border: 1px solid #EB5757;
 }
+
+.modarl-right-container {
+    position: relative;
+}
+
+.card-accurecy {
+    position: absolute;
+    display: block;
+    right: 31px;
+    top: 31px;
+    color: #FFFFFF;
+    background-color: #EB5757;
+    border-radius: 8px;
+
+}
