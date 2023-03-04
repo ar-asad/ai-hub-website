@@ -26,7 +26,6 @@ const showDataInCard = (items, dataLimit, sort) => {
         items.sort((a, b) => (new Date(a.published_in) > new Date(b.published_in)) ? 1 : ((new Date(b.published_in) > new Date(a.published_in)) ? -1 : 0));
     }
     for (const item of items) {
-        console.log(item)
         const cardDiv = document.createElement('div')
         cardDiv.classList.add('col')
         cardDiv.innerHTML = `
@@ -43,7 +42,7 @@ const showDataInCard = (items, dataLimit, sort) => {
             <div class="card-footer bg-body d-flex  align-items-center justify-content-between">
             <div>
             <h5 class="card-title">${item.name}</h5>
-            <p>${item.published_in}</p>
+            <p><i class="fa-regular fa-calendar-days p-2"></i>${item.published_in}</p>
             </div>
             <!-- Button trigger modal -->
             <button onClick="itemsDetails(${item.id})" type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Details</button>
@@ -63,7 +62,6 @@ const itemsDetails = (itemId) => {
 }
 
 const showItemsDetails = (itemsDetails) => {
-    console.log(itemsDetails)
     const cardDetailsContainer = document.getElementById('cardDetails-container')
     cardDetailsContainer.innerHTML = `
     <div class="col">
@@ -71,15 +69,16 @@ const showItemsDetails = (itemsDetails) => {
         <div class="card-body details-card-first rounded">
             <h5>${itemsDetails.description}
             </h5>
-            <div class="row row-cols-1 row-cols-md-3 mb-3">
-                <div style="color: #03A30A;" class="col bg-light fw-bold p-4 rounded">
-                <p>${itemsDetails.pricing[0].price && itemsDetails?.pricing[0].price != 0 && itemsDetails.pricing[0].price != "No cost" ? itemsDetails.pricing[0].price : "Free of coast/"} <br>${itemsDetails.pricing[0].plan}</p>
-                </div >
-                <div style="color: #F28927;" class="col bg-light fw-bold p-4 rounded"> <p>${itemsDetails.pricing[1].price && itemsDetails.pricing[1].price != 0 && itemsDetails.pricing[1].price != "No cost" ? itemsDetails.pricing[1].price : "Free of coast/"} <br>${itemsDetails.pricing[1].plan}</p>
-                </div>
-                <div style="color: #EB5757;" class="col bg-light fw-bold p-4 rounded"> <p>${itemsDetails.pricing[2].price && itemsDetails.pricing[2].price != 0 && itemsDetails.pricing[2].price != "No cost" ? itemsDetails.pricing[2].price : "Free of coast/"} <br>${itemsDetails.pricing[2].plan}</p>
-                </div>
+            ${itemsDetails.pricing ? `  <div class="row row-cols-1 row-cols-md-3 mb-3">
+            <div style="color: #03A30A;" class="col bg-light fw-bold p-4 rounded">
+            <p>${itemsDetails.pricing[0].price && itemsDetails.pricing[0].price != 0 && itemsDetails.pricing[0].price != "No cost" ? itemsDetails.pricing[0].price : "Free of coast/"} <br>${itemsDetails.pricing[0].plan}</p>
             </div >
+            <div style="color: #F28927;" class="col bg-light fw-bold p-4 rounded"> <p>${itemsDetails.pricing[1].price && itemsDetails.pricing[1].price != 0 && itemsDetails.pricing[1].price != "No cost" ? itemsDetails.pricing[1].price : "Free of coast/"} <br>${itemsDetails.pricing[1].plan}</p>
+            </div>
+            <div style="color: #EB5757;" class="col bg-light fw-bold p-4 rounded"> <p>${itemsDetails.pricing[2].price && itemsDetails.pricing[2].price != 0 && itemsDetails.pricing[2].price != "No cost" ? itemsDetails.pricing[2].price : "Free of coast/"} <br>${itemsDetails.pricing[2].plan}</p>
+            </div>
+        </div >`: "<p class='text-danger fw-bold'>Price: No data found</P>"}
+          
         
     <div class="row row-cols-1 row-cols-md-2 justify-content-between ">
         <div class='col'>
@@ -92,11 +91,12 @@ const showItemsDetails = (itemsDetails) => {
         </div>
         <div class='col'>
             <h4>Integrations</h4>
-            <ul>
-                <li>${itemsDetails.integrations[0] ? itemsDetails.integrations[0] : "No data found"}</li>
-                <li>${itemsDetails.integrations[1] ? itemsDetails.integrations[1] : "No data found"}</li>
-                <li>${itemsDetails.integrations[2] ? itemsDetails.integrations[2] : "No data found"}</li>
-            </ul>
+            
+            ${itemsDetails.integrations ? `<ul>
+            <li>${itemsDetails.integrations[0] ? itemsDetails.integrations[0] : "No data found"}</li>
+            <li>${itemsDetails.integrations[1] ? itemsDetails.integrations[1] : "No data found"}</li>
+            <li>${itemsDetails.integrations[2] ? itemsDetails.integrations[2] : "No data found"}</li>
+        </ul>`: "No data found"}
         </div>
     </div>
     </div>
@@ -105,10 +105,10 @@ const showItemsDetails = (itemsDetails) => {
     <div class="col modarl-right-container">
         <div class="card h-100">
             <img class="p-3 rounded-5" src=${itemsDetails.image_link[0]} alt="...">
-            <p class="card-accurecy p-2 fw-semibold">${itemsDetails.accuracy.score}% accuracy</p>
+            ${itemsDetails.accuracy.score ? ` <p class="card-accurecy p-2 fw-semibold">${itemsDetails.accuracy.score}% accuracy</p>` : ""}
                 <div class="card-body">
-                    <h5 class="card-title text-center">${itemsDetails.input_output_examples[0].input}</h5>
-                    <p>${itemsDetails.input_output_examples[1].output ? itemsDetails.input_output_examples[1].output : "No! Not Yet! Take a break!!!"}</p>
+                    ${itemsDetails.input_output_examples ? `<div> <h5 class="card-title text-center">${itemsDetails.input_output_examples[0].input}</h5>
+            <p>${itemsDetails.input_output_examples[0].output ? itemsDetails.input_output_examples[0].output : "No! Not Yet! Take a break!!!"}</p></div>` : '<p class="text-danger text-center">No! Not Yet! Take a break!!!</p>'}
                 </div>
         </div>
     </div>
