@@ -108,7 +108,7 @@ const showItemsDetails = (itemsDetails) => {
             ${itemsDetails.accuracy.score ? ` <p class="card-accurecy p-2 fw-semibold">${itemsDetails.accuracy.score}% accuracy</p>` : ""}
                 <div class="card-body">
                     ${itemsDetails.input_output_examples ? `<div> <h5 class="card-title text-center">${itemsDetails.input_output_examples[0].input}</h5>
-            <p>${itemsDetails.input_output_examples[0].output ? itemsDetails.input_output_examples[0].output : "No! Not Yet! Take a break!!!"}</p></div>` : '<p class="text-danger text-center">No! Not Yet! Take a break!!!</p>'}
+            <p class="text-center">${itemsDetails.input_output_examples[0].output ? itemsDetails.input_output_examples[0].output : "No! Not Yet! Take a break!!!"}</p></div>` : '<p class="text-danger text-center fw-bold">No! Not Yet! Take a break!!!</p>'}
                 </div>
         </div>
     </div>
